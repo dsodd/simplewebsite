@@ -24,5 +24,5 @@ function handleScroll() {
     lastScrollTop = currentScrollTop;
 }
 
-// Add scroll event listener
+// checks if scrolling
 window.addEventListener('scroll', handleScroll, { passive: true });
