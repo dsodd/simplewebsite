@@ -1,5 +1,6 @@
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
+    /* Changed to match HTML */
     margin: 0;
     padding: 0;
     background-color: #1e1e2e;
@@ -8,7 +9,9 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    line-height: 1.6;
 }
+
 .navbar {
     background: #252535;
     padding: 15px;
@@ -25,20 +28,31 @@ body {
 .navbar--hidden {
     transform: translateY(-100%);
 }
+
 .navbar a {
-    color: #ffcc00;
+    color: #ffdd33;
+    /* Slightly brighter for better contrast */
     text-decoration: none;
     padding: 10px 20px;
     margin: 0 10px;
     display: inline-block;
     font-weight: bold;
     transition: 0.3s;
+    position: relative;
 }
-.navbar a:hover {
+
+.navbar a:focus {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+.navbar a:hover,
+.navbar a.active {
     background: #ffcc00;
     color: #252535;
     border-radius: 5px;
 }
+
 .container {
     width: 80%;
     max-width: 1200px;
@@ -52,6 +66,7 @@ body {
     animation: fadeIn 1s ease-in-out;
     flex-grow: 1;
 }
+
 .footer {
     background: #252535;
     padding: 0px;
@@ -60,39 +75,160 @@ body {
     margin-top: auto;
     box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.3);
 }
+
 .footer .socials a {
     text-decoration: none;
     margin: 0 15px;
     font-weight: bold;
     transition: 0.3s;
-}
-.footer .socials a[href*="reddit"] {
-    color: #ff4300;
-}
-.footer .socials a[href*="discord"] {
-    color: #8b9dff;
-}
-.footer .socials a[href*="github"] {
-    color: #000000;
-}
-.footer .socials a[href*="steam"] {
-    color: #11467c;
-}
-.footer .socials a:hover {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     color: #ffffff;
+}
+
+.footer .socials a[href*="reddit"] .social-text {
+    color: #ff5500;
+}
+
+.footer .socials a[href*="discord"] .social-text {
+    color: #7289da;
+}
+
+.footer .socials a[href*="github"] .social-text {
+    color: #cccccc;
+}
+
+.footer .socials a[href*="steam"] .social-text {
+    color: #66c0f4;
+}
+
+.footer .socials a:hover .social-text,
+.footer .socials a:focus .social-text {
     text-decoration: underline;
-    margin-top: 10px;
 }
+
+.footer .socials a:focus {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+}
+
+/* Animations */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Loading animation */
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e2e;
+    z-index: 2000;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.loader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 204, 0, 0.3);
+    border-radius: 50%;
+    border-top-color: #ffcc00;
+    animation: rotate 1s linear infinite;
+}
+
 h1 {
     color: #ffcc00;
 }
+
 h2 {
     color: #ffcc00;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
 }
+
+h2::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #ffcc00;
+    transition: width 0.4s ease;
+}
+
+h2:hover::after {
+    width: 100%;
+}
+
 p {
     font-size: 18px;
     color: #d1d1e9;
@@ -114,9 +250,19 @@ p {
     border: 3px solid #ffcc00;
     margin: 20px auto;
     display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
 }
 
-.about, .projects {
+.profile-picture:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+    animation: pulse 2s infinite ease-in-out;
+}
+
+.about,
+.projects,
+.skills {
     margin: 10px 0;
     padding: 15px;
     border-radius: 8px;
@@ -134,7 +280,46 @@ p {
     background-color: #252535;
     border-radius: 8px;
     padding: 20px;
-    transition: transform 0.3s ease;
+    padding-bottom: 50px; /* Add space for the button */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.project-card::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(45deg, #ffcc00, transparent, #ffcc00, transparent);
+    background-size: 400% 400%;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s ease;
+    animation: gradient-animation 3s ease infinite;
+}
+
+.project-card:hover::before {
+    opacity: 0.2;
+}
+
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .project-card:hover {
@@ -150,8 +335,26 @@ p {
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
-    margin-top: 15px;
-    transition: background-color 0.3s;
+    margin-top: auto;
+    margin-bottom: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+    align-self: center;
+    width: 120px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.project-link:hover,
+.project-link:focus {
+    background-color: #ffdd33;
+    transform: translateX(-50%) scale(1.05);
+}
+
+.project-link:focus {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
 }
 
 .socials-list {
@@ -169,14 +372,190 @@ p {
     margin-right: 8px;
 }
 
+.social-text {
+    display: inline-block;
+}
+
 /* Media queries for responsiveness */
-@media (max-width: 2000px) {
+@media (max-width: 768px) {
     .container {
-        width: 90%;
+        width: 95%;
         padding: 15px;
     }
-    
+
     .project-grid {
         grid-template-columns: 1fr;
+    }
+
+    .navbar a {
+        padding: 8px 12px;
+        margin: 0 5px;
+        font-size: 0.9rem;
+    }
+
+    .socials-list {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+}
+
+/* Animation effect classes */
+.animate-on-load,
+.animate-on-scroll {
+    opacity: 0;
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-load.animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.animate-on-scroll {
+    transform: translateY(20px);
+}
+
+/* Skills Section Styling */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.skill-category {
+    flex: 1;
+    min-width: 250px;
+    background-color: #252535;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skill-category:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.skill-category h3 {
+    color: #ffcc00;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+.skill-item {
+    margin-bottom: 15px;
+}
+
+.skill-name {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #d1d1e9;
+}
+
+.skill-bar {
+    height: 20px;
+    background-color: #1e1e2e;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.skill-level {
+    height: 100%;
+    background: linear-gradient(to right, #ffcc00, #ffaa00);
+    border-radius: 10px;
+    color: #252535;
+    text-align: right;
+    padding-right: 10px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    line-height: 20px;
+    transition: width 1.5s ease-in-out;
+    width: 0;
+}
+
+/* Animation for skill bars when they come into view */
+.skills.animated .skill-level {
+    animation: skill-fill 1.5s forwards ease-out;
+}
+
+@keyframes skill-fill {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: var(--target-width);
+    }
+}
+
+/* Add different colors for different skill levels */
+.skill-level[style*="width: 8"] {
+    background: linear-gradient(to right, #ffcc00, #ff9500);
+}
+
+.skill-level[style*="width: 7"] {
+    background: linear-gradient(to right, #ffcc00, #ffaa00);
+}
+
+.skill-level[style*="width: 6"] {
+    background: linear-gradient(to right, #ffcc00, #ffbb00);
+}
+
+/* Media query for skills on smaller screens */
+@media (max-width: 768px) {
+    .skills-container {
+        flex-direction: column;
+    }
+
+    .skill-category {
+        min-width: 100%;
+    }
+}
+
+.animate-on-scroll.animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Staggered animations */
+.animate-on-load:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.animate-on-load:nth-child(2) {
+    transition-delay: 0.2s;
+}
+
+.animate-on-load:nth-child(3) {
+    transition-delay: 0.3s;
+}
+
+.animate-on-load:nth-child(4) {
+    transition-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .loader {
+        display: none !important;
+    }
+
+    .animate-on-load,
+    .animate-on-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
     }
 }
