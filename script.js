@@ -152,7 +152,7 @@ document.querySelectorAll('.project-card').forEach(card => {
         if (window.hoverSound) {
             window.hoverSound.currentTime = 0;
             window.hoverSound.play().catch(e => {
-                // Ignore errors - sound may not be allowed without user interaction
+                // ignore errors - sound may not be allowed without user interaction
             });
         }
     });
