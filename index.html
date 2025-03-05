@@ -7,6 +7,7 @@
             name="description"
             content="Personal website of dsod - Developer, Gamer, and Learner from Serbia"
         />
+        <meta name="robots" content="index, follow" />
         <title>dsod - About Me</title>
         <link rel="icon" href="pngs/favicon.png" type="image/png" />
         <link
@@ -21,7 +22,7 @@
             <div class="spinner"></div>
         </div>
 
-        <nav class="navbar" aria-label="Main navigation">
+        <nav class="navbar" aria-label="Main navigation" role="navigation">
             <a href="#aboutme" aria-label="About Me section">About</a>
             <a href="#skills" aria-label="Skills section">Skills</a>
             <a href="#projects" aria-label="Projects section">Projects</a>
@@ -35,8 +36,9 @@
                 </p>
                 <img
                     src="pngs/profile-picture.gif"
-                    alt="Profile Picture of dsod"
+                    alt="Profile picture of dsod, a developer from Serbia"
                     class="profile-picture animate-on-load"
+                    loading="lazy"
                 />
             </div>
         </header>
@@ -61,33 +63,25 @@
                         <div class="skill-item">
                             <span class="skill-name">Python</span>
                             <div class="skill-bar">
-                                <div class="skill-level" style="width: 63%">
-                                    63%
-                                </div>
+                                <div class="skill-level" data-skill-width="63%">63%</div>
                             </div>
                         </div>
                         <div class="skill-item">
                             <span class="skill-name">HTML/CSS</span>
                             <div class="skill-bar">
-                                <div class="skill-level" style="width: 23%">
-                                    23%
-                                </div>
+                                <div class="skill-level" data-skill-width="23%">23%</div>
                             </div>
                         </div>
                         <div class="skill-item">
                             <span class="skill-name">JavaScript</span>
                             <div class="skill-bar">
-                                <div class="skill-level" style="width: 12%">
-                                    12%
-                                </div>
+                                <div class="skill-level" data-skill-width="12%">12%</div>
                             </div>
                         </div>
                         <div class="skill-item">
                             <span class="skill-name">C#</span>
                             <div class="skill-bar">
-                                <div class="skill-level" style="width: 2%">
-                                    2%
-                                </div>
+                                <div class="skill-level" data-skill-width="2%">2%</div>
                             </div>
                         </div>
                     </div>
@@ -97,17 +91,13 @@
                         <div class="skill-item">
                             <span class="skill-name">Game Modding</span>
                             <div class="skill-bar">
-                                <div class="skill-level" style="width: 93%">
-                                    93%
-                                </div>
+                                <div class="skill-level" data-skill-width="93%">93%</div>
                             </div>
                         </div>
                         <div class="skill-item">
                             <span class="skill-name">Plugin Development</span>
                             <div class="skill-bar">
-                                <div class="skill-level" style="width: 7%">
-                                    7%
-                                </div>
+                                <div class="skill-level" data-skill-width="7%">7%</div>
                             </div>
                         </div>
                     </div>
@@ -158,7 +148,7 @@
                         >
                             <img
                                 src="pngs/reddit.png"
-                                alt=""
+                                alt="Reddit icon"
                                 class="social-icon"
                             />
                             <span class="social-text">Reddit</span>
@@ -170,7 +160,7 @@
                         >
                             <img
                                 src="pngs/discord.png"
-                                alt=""
+                                alt="Discord icon"
                                 class="social-icon"
                             />
                             <span class="social-text">Discord</span>
@@ -182,7 +172,7 @@
                         >
                             <img
                                 src="pngs/github.png"
-                                alt=""
+                                alt="GitHub icon"
                                 class="social-icon"
                             />
                             <span class="social-text">GitHub</span>
@@ -194,16 +184,16 @@
                         >
                             <img
                                 src="pngs/steam.png"
-                                alt=""
+                                alt="Steam icon"
                                 class="social-icon"
                             />
                             <span class="social-text">Steam</span>
                         </a>
                     </div>
                 </section>
-                <p>&copy; <span id="year">2023</span> dsod</p>
+                <p>&copy; <span id="year"></span> dsod</p>
             </div>
         </footer>
-        <script src="script.js"></script>
+        <script src="script.js" defer></script>
     </body>
 </html>

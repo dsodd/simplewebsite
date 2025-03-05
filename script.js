@@ -1,8 +1,7 @@
 let lastScrollTop = 0;
 const navbar = document.querySelector('.navbar');
-const scrollThreshold = 20; // Minimum scroll amount before toggling navbar
+const scrollThreshold = 20;
 
-// dis do scroll even handle
 function handleScroll() {
     const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
@@ -10,22 +9,17 @@ function handleScroll() {
         return;
     }
     
-    // scroll dw
     if (currentScrollTop > lastScrollTop && currentScrollTop > navbar.offsetHeight) {
         navbar.classList.add('navbar--hidden');
-    } 
-    // scroll up
-    else if (currentScrollTop < lastScrollTop) {
+    } else if (currentScrollTop < lastScrollTop) {
         navbar.classList.remove('navbar--hidden');
     }
     
     lastScrollTop = currentScrollTop;
 }
 
-// checks for scrolling
 window.addEventListener('scroll', handleScroll, { passive: true });
 
-// highlithing nav button based on position
 function updateActiveNavigation() {
     const sections = document.querySelectorAll('section[id], header[id]');
     const navLinks = document.querySelectorAll('.navbar a');
@@ -35,14 +29,12 @@ function updateActiveNavigation() {
     sections.forEach(section => {
         const sectionTop = section.offsetTop - 100;
         const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
         
         if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-            currentSection = sectionId;
+            currentSection = section.getAttribute('id');
         }
     });
     
-    // if at bot of page, higlights "Contact" nav button
     const bottomOfPage = window.innerHeight + window.pageYOffset >= document.body.offsetHeight - 100;
     if (bottomOfPage) {
         currentSection = 'contact';
@@ -50,18 +42,16 @@ function updateActiveNavigation() {
     
     navLinks.forEach(link => {
         link.classList.remove('active');
-        const linkTarget = link.getAttribute('href').substring(1); // Remove the # from href
+        const linkTarget = link.getAttribute('href').substring(1);
         if (linkTarget === currentSection) {
             link.classList.add('active');
         }
     });
 }
 
-// calls on scroll
 window.addEventListener('scroll', updateActiveNavigation);
 window.addEventListener('load', updateActiveNavigation);
 
-// smoothen out scrolling for anchor link presses
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -70,14 +60,11 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const targetElement = document.querySelector(targetId);
         
         if (targetElement) {
-            // checks if user client has reduced motion enabled
             const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             
             if (prefersReducedMotion) {
-                // jump to target if reduced motion is enabled
                 targetElement.scrollIntoView();
             } else {
-                // smooth scroll to target if reduced motion is not enabled
                 targetElement.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
@@ -87,86 +74,61 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// sets current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// adds tabindex to project cards for better keyboard navigation
-document.querySelectorAll('.project-card').forEach(card => {
-    if (!card.getAttribute('tabindex')) {
-        card.setAttribute('tabindex', '0');
-    }
-});
-
-// loading screen
 window.addEventListener('load', function() {
     const loader = document.querySelector('.loader');
     if (loader) {
         setTimeout(() => {
             loader.classList.add('hidden');
-            // Start entrance animations for content after loading
             document.querySelectorAll('.animate-on-load').forEach((element, index) => {
                 setTimeout(() => {
                     element.classList.add('animated');
                 }, index * 150);
             });
-        }, 1000); // 1 second delay to show the loader
+        }, 1000);
     }
 });
 
-// scrolling animations
-const observerOptions = {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px'
-};
+// Adding dynamic tilt and depth effect to project cards
+const projectCards = document.querySelectorAll('.project-card');
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animated');
-            observer.unobserve(entry.target);
-        }
+projectCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const { width, height, left, top } = card.getBoundingClientRect();
+        const centerX = left + width / 2;
+        const centerY = top + height / 2;
+        const offsetX = e.clientX - centerX;
+        const offsetY = e.clientY - centerY;
+
+        // Reversing the tilt so it moves away from the cursor
+        const rotateX = -(offsetY / height) * 15; // Tilt along X-axis (vertical) - Reversed
+        const rotateY = (offsetX / width) * 15;  // Tilt along Y-axis (horizontal) - Reversed
+
+        // Depth effect (translateZ) based on cursor proximity to the card edges
+        const translateZ = (Math.abs(offsetX) + Math.abs(offsetY)) / 20;
+
+        // Apply the dynamic 3D transform to the card
+        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
     });
-}, observerOptions);
 
-// checks for elements to animate
-document.querySelectorAll('.animate-on-scroll').forEach(element => {
-    observer.observe(element);
+    // Reset the card transform when the mouse leaves
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
+    });
 });
 
-// init skill bars with target width
+// Ensure skill bars animate on page load
 document.addEventListener('DOMContentLoaded', () => {
     const skillLevels = document.querySelectorAll('.skill-level');
+    
     skillLevels.forEach(level => {
-        // gets the percentage from the inline style or text content
-        const width = level.style.width || level.textContent.trim();
-        // stores the target width as a CSS variable
-        level.style.setProperty('--target-width', width);
-        // resets the initial width to 0 for animation
-        level.style.width = '0';
+        const width = level.getAttribute('data-skill-width'); // Get the skill width from the data attribute
+        level.style.width = '0%';  // Start from 0% width for animation
+        
+        // Trigger the transition to the correct value
+        setTimeout(() => {
+            level.style.width = width;  // Animate from 0% to the desired width
+        }, 100); // 100ms delay for smooth animation
     });
-});
-
-// add hover sound effect to project cards
-document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        if (window.hoverSound) {
-            window.hoverSound.currentTime = 0;
-            window.hoverSound.play().catch(e => {
-                // ignore errors - sound may not be allowed without user interaction
-            });
-        }
-    });
-});
-
-// adds hover sound effects (not 100% sure if this works on all devices)
-function initSoundEffects() {
-    window.hoverSound = new Audio();
-    window.hoverSound.src = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//uQZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAAFAAAGngCFhYWFhYWFhYWFhYWFhYWFhYWFusrKysrKysrKysrKysrKysrKysr/////////////////////////////////////////AAAAAExhdmM1OC4xMwAAAAAAAAAAAAAAACQDQAAAAAAAAIYeYzSxAAAAAAAAAAAAAAAAAAAA//sQZAAP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAETEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=';
-    window.hoverSound.load();
-    window.hoverSound.volume = 0.2;
-}
-
-// run when dom is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    initSoundEffects();
 });
