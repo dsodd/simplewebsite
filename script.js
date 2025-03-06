@@ -90,7 +90,6 @@ window.addEventListener('load', function() {
     }
 });
 
-// Adding dynamic tilt and depth effect to project cards
 const projectCards = document.querySelectorAll('.project-card');
 
 projectCards.forEach(card => {
@@ -101,34 +100,28 @@ projectCards.forEach(card => {
         const offsetX = e.clientX - centerX;
         const offsetY = e.clientY - centerY;
 
-        // Reversing the tilt so it moves away from the cursor
-        const rotateX = -(offsetY / height) * 15; // Tilt along X-axis (vertical) - Reversed
-        const rotateY = (offsetX / width) * 15;  // Tilt along Y-axis (horizontal) - Reversed
+        const rotateX = -(offsetY / height) * 15; 
+        const rotateY = (offsetX / width) * 15;  
 
-        // Depth effect (translateZ) based on cursor proximity to the card edges
         const translateZ = (Math.abs(offsetX) + Math.abs(offsetY)) / 20;
 
-        // Apply the dynamic 3D transform to the card
         card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
     });
 
-    // Reset the card transform when the mouse leaves
     card.addEventListener('mouseleave', () => {
         card.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0px)';
     });
 });
 
-// Ensure skill bars animate on page load
 document.addEventListener('DOMContentLoaded', () => {
     const skillLevels = document.querySelectorAll('.skill-level');
     
     skillLevels.forEach(level => {
-        const width = level.getAttribute('data-skill-width'); // Get the skill width from the data attribute
-        level.style.width = '0%';  // Start from 0% width for animation
+        const width = level.getAttribute('data-skill-width');
+        level.style.width = '0%'; 
         
-        // Trigger the transition to the correct value
         setTimeout(() => {
-            level.style.width = width;  // Animate from 0% to the desired width
-        }, 100); // 100ms delay for smooth animation
+            level.style.width = width;
+        }, 100);
     });
 });
